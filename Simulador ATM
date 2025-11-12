@@ -1,0 +1,105 @@
+using System;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
+
+namespace ATM
+{
+    class CuentaBancaria
+    {
+
+        public string? Titular { get; set; }
+        public double Saldo { get; set; }
+
+        public CuentaBancaria(string titular, double saldoBase)
+        {
+            Titular = titular;
+            Saldo = saldoBase;
+        }
+    }
+
+    class ProgramEjecution
+    {
+        static void Main(string[] args)
+        {
+
+
+            string? UsuaryName = "";
+
+            while (UsuaryName == "")
+            {
+                Console.Write("Por Favor, Ingrese Su Nombre: ");
+                UsuaryName = Console.ReadLine();
+            }
+
+            CuentaBancaria Acount = new CuentaBancaria(UsuaryName!, 100);
+            Console.WriteLine($"Hola {UsuaryName}, su cuenta bancaria a sido creada, con un saldo inicial de {Acount.Saldo}");
+
+            bool Menu = true;
+            while (Menu)
+            {
+                Menu = MainMenu(Acount);
+
+            }
+
+
+        }
+        static bool MainMenu(CuentaBancaria cuenta)
+        {
+            Console.WriteLine("---Seleccione una de las opciones para continuar---");
+            Console.WriteLine("1. Consultar Saldo: ");
+            Console.WriteLine("2. Depositar Dinero: ");
+            Console.WriteLine("3. Retirar Dinero: ");
+            Console.WriteLine("4. Salir: ");
+            Console.WriteLine("\r\nElija una opción: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    Console.WriteLine($"La Cantidad De Saldo Disponible Es De {cuenta.Saldo}"); break;
+                case "2":
+                    Console.WriteLine($"Su Saldo Actual Es De: {cuenta.Saldo}");
+                    Console.WriteLine("Ingrese el monto que quiere depositar: ");
+                    if (double.TryParse(Console.ReadLine(), out double deposito) && deposito > 0)
+                    {
+                        cuenta.Saldo += deposito;
+                        Console.WriteLine($"El dinero a sido depositado. Saldo Actual: {cuenta.Saldo}");
+                    }
+                    else
+                    {
+                        Console.WriteLine("No se ha declarado un monto válido");
+                    }
+                    break;
+                case "3":
+                    Console.WriteLine($"Su Saldo Actual Es De: {cuenta.Saldo}");
+                    Console.WriteLine("Elija La Cantidad De Dinero Que Deseé Retirar: ");
+                    if (double.TryParse(Console.ReadLine(), out double retiro) && retiro > 0)
+                    {
+                        if (retiro <= cuenta.Saldo)
+                        {
+                            cuenta.Saldo -= retiro;
+                            Console.WriteLine($"Su retiro de dinero fue exitoso. Saldo Actual: {cuenta.Saldo}");
+
+                        }
+                        else
+                        {
+                            Console.WriteLine("Saldo Insuficiente");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("El Monto Seleccionado No Es Válido");
+                    }
+                    break;
+                case "4":
+                    return false;
+            }
+            Console.WriteLine("\nSeleccione Una Tecla Cualquiera Para Continuar");
+            Console.ReadKey();
+
+            return true;
+
+        }
+
+    }
+     
+}
